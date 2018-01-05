@@ -1,0 +1,28 @@
+---
+  - name: Provision ec2 instance
+    hosts: local
+    connection: local
+    gather_facts: False
+
+    vars:
+      image: ami-8fd760f6                        # ubuntu ami
+      instance_type: t2.micro
+      keypair: Ansible
+      region: eu-west-1
+      instance_profile_name: allow-access-to-s3  # created manually, could not find ansible module to do this
+      volumnes: 10
+      count: 1
+
+    tasks:
+
+      - name: Launch ec2 instance
+        local_action: ec2 
+                      image={{ image }} 
+                      instance_type={{ instance_type}} 
+                      keypair={{ keypair }}
+                      region={{ region }} 
+                      instance_profile_name={{ instance_profile_name }}
+                      volumes={{ volumnes }}
+                      count={{count}}
+                      wait=true
+        register: ec2
