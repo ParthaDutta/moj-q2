@@ -9,7 +9,7 @@
       instance_type: t2.micro
       keypair: Ansible
       region: eu-west-1
-      instance_profile_name: allow-access-to-s3  # created manually, could not find ansible module to do this
+      instance_profile_name: allow-access-to-s3
       count: 1
       security_group: Allow ssh access
       rules_ingress:
