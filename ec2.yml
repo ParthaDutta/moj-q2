@@ -25,7 +25,7 @@
       - mame: Create IAM role
         local_action:
           module: iam_role
-          name: "Allow-S3-Bbucket-Access"
+          name: "{{ instance_profile_name }}"
           assume_role_policy_document: "{{ lookup('file','policy.json') }}"
           state: present
           managed_policy:

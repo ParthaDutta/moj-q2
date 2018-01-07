@@ -14,3 +14,5 @@ Then run command
 '''
 ansible-playbook -i ./hosts ec2.yml
 '''
+
+Note: 1st time it fails because `instance profile` has not been created in time to be attached to ec2 instance.
