@@ -22,6 +22,15 @@
         cidr_ip: 0.0.0.0/0
 
     tasks:
+      - mame: Create IAM role
+        local_action:
+          module: iam_role
+          name: "Allow-S3-Bbucket-Access"
+          assume_role_policy_document: "{{ lookup('file','policy.json') }}"
+          state: present
+          managed_policy:
+            - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
       - name: Create security group
         local_action:
           module: ec2_group
