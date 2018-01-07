@@ -10,19 +10,34 @@
       keypair: Ansible
       region: eu-west-1
       instance_profile_name: allow-access-to-s3  # created manually, could not find ansible module to do this
-      volumnes: 10
       count: 1
+      security_group: Allow ssh access
+      rules_ingress:
+        - proto: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+      rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
 
     tasks:
+      - name: Create security group
+        local_action:
+          module: ec2_group
+          name: "{{ security_group }}"
+          description: "{{ security_group }}"
+          region: "{{ region }}"
+          rules: "{{ rules_ingress }}"
+          rules_egress: "{{ rules_egress }}"
 
       - name: Launch ec2 instance
         local_action: ec2 
-                      image={{ image }} 
-                      instance_type={{ instance_type}} 
+                      image={{ image }}
+                      instance_type={{ instance_type }}
                       keypair={{ keypair }}
-                      region={{ region }} 
+                      region={{ region }}
+                      group={{ security_group }}
                       instance_profile_name={{ instance_profile_name }}
-                      volumes={{ volumnes }}
                       count={{count}}
                       wait=true
-        register: ec2
